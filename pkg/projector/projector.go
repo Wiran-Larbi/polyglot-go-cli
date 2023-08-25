@@ -15,6 +15,13 @@ type Projector struct {
 	data   *Data
 }
 
+func CreateProjector(config *Config, data *Data) *Projector {
+	return &Projector{
+		config: config,
+		data:   data,
+	}
+}
+
 func (p *Projector) GetValue(key string) (string, bool) {
 	curr := p.config.Pwd
 	prev := ""
@@ -85,7 +92,7 @@ func defaultProjector(config *Config) *Projector {
 }
 
 func NewProjector(config *Config) *Projector {
-	if _, err := os.Stat(config.Config); err != nil {
+	if _, err := os.Stat(config.Config); err == nil {
 		contents, err := os.ReadFile(config.Config)
 		if err != nil {
 			return defaultProjector(config)
